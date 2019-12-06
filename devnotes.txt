@@ -1,0 +1,5 @@
+2019_12_06
+==========
+- sudo apt-get install python3-tk required
+- look into https://github.com/spotify/dh-virtualenv for deployment with venv
+

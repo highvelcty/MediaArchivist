@@ -1,0 +1,2 @@
+sphinx
+-r ../media_archivist/requirements.txt

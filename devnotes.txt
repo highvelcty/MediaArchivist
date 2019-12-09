@@ -3,3 +3,8 @@
 - sudo apt-get install python3-tk required
 - look into https://github.com/spotify/dh-virtualenv for deployment with venv
 
+2019_12_09
+==========
+- Unit test execution entry points (unit testing, doc generation, execution) from within the dir and
+  outside the dir of the executable.
+

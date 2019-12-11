@@ -1,2 +1,2 @@
 coverage
--r ../media_archivist/requirements.txt
+-r ../MA/requirements.txt

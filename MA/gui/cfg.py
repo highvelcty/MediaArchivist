@@ -16,6 +16,23 @@ MEDIA_ARCHIVIST_CFG_DIR = '.mediaarchivist'
 GUI_CFG_FILENME = 'guicfg.cfg'
 CFG_DIR_AND_FILE_PERMISSIONS = 0o700
 
+# === Enumerations =================================================================================
+class Section(object):
+    ROOT_GEOMETRY = 'ROOT_GEOMETRY'
+
+class RootGeometryKey(object):
+    HEIGHT_PIXELS = 'HEIGHT_PIXELS'
+    WIDTH_PIXELS = 'WIDTH_PIXELS'
+    ZOOMED = 'ZOOMED'
+
+DEFAULT_CFG = {
+    Section.ROOT_GEOMETRY: {
+        RootGeometryKey.HEIGHT_PIXELS: 600,
+        RootGeometryKey.WIDTH_PIXELS: 800,
+        RootGeometryKey.ZOOMED: False,
+    }
+}
+
 # === Functions ====================================================================================
 def get_cfg_dir() -> str:
     try:
@@ -36,17 +53,12 @@ class GUIConfig(configparser.ConfigParser):
 
         self._path_to_file = os.path.join(self._path_to_dir, GUI_CFG_FILENME)
 
+        # Read the default dictionary first. The defaults will/may be masked by data read from file
+        # next
+        self.read_dict(DEFAULT_CFG)
+
         try:
             self.read(self._path_to_file)
-        # Nice! A base exception for the package.
+        # The base exception for the configparser package.
         except configparser.Error:
-            self._generate_defaults()
-
-    def _generate_defaults(self):
-        pass
-
-
-
-
-
-
+            pass

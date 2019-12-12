@@ -4,6 +4,7 @@ import tkinter as tk
 
 # Local Library
 from . import utils
+from .cfg import gui_cfg, CfgSection, RootGeometrySectKey
 from .dirview import  DirView
 
 # === Constants ====================================================================================

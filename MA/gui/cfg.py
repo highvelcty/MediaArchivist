@@ -8,6 +8,9 @@ import os
 
 # Local Library
 
+# === Globals ======================================================================================
+gui_cfg = None
+
 # === Constants ====================================================================================
 CONFIG_HIDDEN_FOLDER = '.config'
 HOME_SHORTCHUT = '~'
@@ -17,19 +20,19 @@ GUI_CFG_FILENME = 'guicfg.cfg'
 CFG_DIR_AND_FILE_PERMISSIONS = 0o700
 
 # === Enumerations =================================================================================
-class Section(object):
+class CfgSection(object):
     ROOT_GEOMETRY = 'ROOT_GEOMETRY'
 
-class RootGeometryKey(object):
+class RootGeometrySectKey(object):
     HEIGHT_PIXELS = 'HEIGHT_PIXELS'
     WIDTH_PIXELS = 'WIDTH_PIXELS'
     ZOOMED = 'ZOOMED'
 
 DEFAULT_CFG = {
-    Section.ROOT_GEOMETRY: {
-        RootGeometryKey.HEIGHT_PIXELS: 600,
-        RootGeometryKey.WIDTH_PIXELS: 800,
-        RootGeometryKey.ZOOMED: False,
+    CfgSection.ROOT_GEOMETRY: {
+        RootGeometrySectKey.HEIGHT_PIXELS: 600,
+        RootGeometrySectKey.WIDTH_PIXELS: 800,
+        RootGeometrySectKey.ZOOMED: False,
     }
 }
 
@@ -40,6 +43,10 @@ def get_cfg_dir() -> str:
     except KeyError:
         path_to_cfg_dir = os.path.join(os.path.expanduser(HOME_SHORTCHUT), CONFIG_HIDDEN_FOLDER)
     return path_to_cfg_dir
+
+def make_gui_cfg():
+    global gui_cfg
+    gui_cfg = GUIConfig()
 
 # === Classes ======================================================================================
 class GUIConfig(configparser.ConfigParser):

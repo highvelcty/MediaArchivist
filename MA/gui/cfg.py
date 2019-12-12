@@ -99,9 +99,8 @@ class CfgFile(object):
         self._fd = os.open(self._file_path, os.O_WRONLY | os.O_CREAT, CFG_DIR_AND_FILE_PERMISSIONS)
         return self
 
-    def write(self, data):
-        os.write(self._fd, data.encode())
-
     def __exit__(self, exc_type, exc_val, exc_tb):
         os.close(self._fd)
 
+    def write(self, data):
+        os.write(self._fd, data.encode())

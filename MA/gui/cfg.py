@@ -3,6 +3,7 @@ This module is the GUI configuration file interface.
 """
 # === Imports ======================================================================================
 # Standard Library
+import atexit
 import configparser
 import os
 
@@ -15,7 +16,7 @@ gui_cfg = None
 CONFIG_HIDDEN_FOLDER = '.config'
 HOME_SHORTCHUT = '~'
 ENV_XDG_CONFIG_HOME = 'XDG_CONFIG_HOME'
-MEDIA_ARCHIVIST_CFG_DIR = '.mediaarchivist'
+MEDIA_ARCHIVIST_CFG_DIR = 'mediaarchivist'
 GUI_CFG_FILENME = 'guicfg.cfg'
 CFG_DIR_AND_FILE_PERMISSIONS = 0o700
 
@@ -26,12 +27,16 @@ class CfgSection(object):
 class RootGeometrySectKey(object):
     HEIGHT_PIXELS = 'HEIGHT_PIXELS'
     WIDTH_PIXELS = 'WIDTH_PIXELS'
+    POSX_PIXELS = 'POSX_PIXELS'
+    POSY_PIXELS = 'POSY_PIXELS'
     ZOOMED = 'ZOOMED'
 
 DEFAULT_CFG = {
     CfgSection.ROOT_GEOMETRY: {
         RootGeometrySectKey.HEIGHT_PIXELS: 600,
         RootGeometrySectKey.WIDTH_PIXELS: 800,
+        RootGeometrySectKey.POSX_PIXELS: 0,
+        RootGeometrySectKey.POSY_PIXELS: 0,
         RootGeometrySectKey.ZOOMED: False,
     }
 }
@@ -69,3 +74,34 @@ class GUIConfig(configparser.ConfigParser):
         # The base exception for the configparser package.
         except configparser.Error:
             pass
+
+        atexit.register(self._destroy)
+
+    def _destroy(self):
+        print('writing to: %s' % self._path_to_file)
+        """
+        This method is called on python exit.
+        """
+        try:
+            with CfgFile(self._path_to_file) as cfgfile:
+                self.write(cfgfile)
+        except:
+            print('Warning: Failed to write the GUI configuration file to:\n%s' %
+                  self._path_to_file)
+            print('Here is the traceback when attempting to write the file:')
+            import traceback
+            traceback.print_exc()
+            
+class CfgFile(object):
+    def __init__(self, file_path):
+        self._file_path = file_path
+    def __enter__(self):
+        self._fd = os.open(self._file_path, os.O_WRONLY | os.O_CREAT, CFG_DIR_AND_FILE_PERMISSIONS)
+        return self
+
+    def write(self, data):
+        os.write(self._fd, data.encode())
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        os.close(self._fd)
+

@@ -13,12 +13,14 @@ import os
 gui_cfg = None
 
 # === Constants ====================================================================================
-CONFIG_HIDDEN_FOLDER = '.config'
-HOME_SHORTCHUT = '~'
-ENV_XDG_CONFIG_HOME = 'XDG_CONFIG_HOME'
-MEDIA_ARCHIVIST_CFG_DIR = 'mediaarchivist'
-GUI_CFG_FILENME = 'guicfg.cfg'
 CFG_DIR_AND_FILE_PERMISSIONS = 0o700
+CONFIG_HIDDEN_FOLDER = '.config'
+ENV_XDG_CONFIG_HOME = 'XDG_CONFIG_HOME'
+GUI_CFG_FILENME = 'guicfg.cfg'
+HOME_SHORTCHUT = '~'
+MEDIA_ARCHIVIST_CFG_DIR = 'mediaarchivist'
+MIN_HEIGHT_IN_PIXELS = 600
+MIN_WIDTH_IN_PIXELS = 800
 
 # === Enumerations =================================================================================
 class CfgSection(object):
@@ -33,8 +35,8 @@ class RootGeometrySectKey(object):
 
 DEFAULT_CFG = {
     CfgSection.ROOT_GEOMETRY: {
-        RootGeometrySectKey.HEIGHT_PIXELS: 600,
-        RootGeometrySectKey.WIDTH_PIXELS: 800,
+        RootGeometrySectKey.HEIGHT_PIXELS: MIN_HEIGHT_IN_PIXELS,
+        RootGeometrySectKey.WIDTH_PIXELS: MIN_WIDTH_IN_PIXELS,
         RootGeometrySectKey.POSX_PIXELS: 0,
         RootGeometrySectKey.POSY_PIXELS: 0,
         RootGeometrySectKey.ZOOMED: False,

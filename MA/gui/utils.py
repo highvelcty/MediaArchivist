@@ -38,7 +38,7 @@ def split_tk_geometry_str(geom_str: str) -> Tuple[int, int, int, int]:
     :return: Four item tuple consisting of the width in pixels, the height in pixels, the x position
              in pixels and the y position in pixels. All items are integers.
     """
-    geom_str = geom_str.lower().split()
+    geom_str = geom_str.lower().strip()
     shape, posx, posy = geom_str.split('+')
     width, height = shape.split('x')
 

@@ -24,22 +24,16 @@ MIN_WIDTH_IN_PIXELS = 800
 
 # === Enumerations =================================================================================
 class CfgSection(object):
-    ROOT_GEOMETRY = 'ROOT_GEOMETRY'
+    ROOT_WINDOW = 'ROOT_WINDOW'
 
-class RootGeometrySectKey(object):
-    HEIGHT_PIXELS = 'HEIGHT_PIXELS'
-    WIDTH_PIXELS = 'WIDTH_PIXELS'
-    POSX_PIXELS = 'POSX_PIXELS'
-    POSY_PIXELS = 'POSY_PIXELS'
+class RootWindowKey(object):
+    GEOMETRY = 'GEOMETRY'
     ZOOMED = 'ZOOMED'
 
 DEFAULT_CFG = {
-    CfgSection.ROOT_GEOMETRY: {
-        RootGeometrySectKey.HEIGHT_PIXELS: MIN_HEIGHT_IN_PIXELS,
-        RootGeometrySectKey.WIDTH_PIXELS: MIN_WIDTH_IN_PIXELS,
-        RootGeometrySectKey.POSX_PIXELS: 0,
-        RootGeometrySectKey.POSY_PIXELS: 0,
-        RootGeometrySectKey.ZOOMED: False,
+    CfgSection.ROOT_WINDOW: {
+        RootWindowKey.GEOMETRY: '%sx%s+%d+%d' % (MIN_WIDTH_IN_PIXELS, MIN_HEIGHT_IN_PIXELS, 0, 0),
+        RootWindowKey.ZOOMED: False,
     }
 }
 
@@ -75,7 +69,10 @@ class GUIConfig(configparser.ConfigParser):
             self.read(self._path_to_file)
         # The base exception for the configparser package.
         except configparser.Error:
-            pass
+            print('Warning: Failed to read GUI configuration file at:\n%s' % self._path_to_file)
+            print('Here is the traceback:')
+            import traceback
+            traceback.print_exc()
 
         atexit.register(self._destroy)
 
@@ -90,7 +87,7 @@ class GUIConfig(configparser.ConfigParser):
         except:
             print('Warning: Failed to write the GUI configuration file to:\n%s' %
                   self._path_to_file)
-            print('Here is the traceback when attempting to write the file:')
+            print('Here is the traceback:')
             import traceback
             traceback.print_exc()
             

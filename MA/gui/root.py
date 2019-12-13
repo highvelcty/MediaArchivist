@@ -34,6 +34,7 @@ class MediaArchivistGUI(tk.Tk):
 
         self.grid_propagate(False)
         self.pack_propagate(False)
+        # avoid flicker
         self.withdraw()
 
         # --- Widgets ---
@@ -54,7 +55,6 @@ class MediaArchivistGUI(tk.Tk):
         # Grab the window position and geometry state
         width_pixels, height_pixels, posx_pixels, posy_pixels = \
             utils.split_tk_geometry_str(self.geometry())
-            # utils.split_tk_geometry_str(self.geometry())
 
         zoomed = bool(self.wm_attributes('-zoomed'))
 

@@ -15,6 +15,10 @@ class NavBar(tk.Frame):
         self._nav_options = NavOptions(self)
         self._close_button = tk.Button(self, text = 'x')
 
+        self.columnconfigure(0, weight=1)
+        self._nav_entry.grid(row=0, column=0, sticky=tk.EW)
+
+
 class NavEntry(tk.Entry):
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master, cnf, **kw)
@@ -33,9 +37,14 @@ class Listing(ttk.Treeview):
 
 class DirView(tk.Frame):
     def __init__(self, master=None, cnf={}, **kw):
-        super().__init__(master, cnf, **kw)
+        super().__init__(master, cnf, background='blue', **kw)
 
         self._nav_bar = NavBar(self)
         self._listing = Listing(self)
+
+        self.columnconfigure(0, weight=1)
+        self._nav_bar.grid(row=0, column=0, sticky=tk.EW)
+
+
 
 

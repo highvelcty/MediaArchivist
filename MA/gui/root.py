@@ -32,6 +32,8 @@ class MediaArchivistGUI(tk.Tk):
         self._dir_view = DirView(self)
 
         # --- Layout ---
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
         self._dir_view.grid(row=0, column=0, sticky=tk.NSEW)
 
         # --- Finalize ---

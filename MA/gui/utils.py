@@ -1,4 +1,5 @@
 # === Imports ======================================================================================
+import sys
 from typing import Union, Tuple
 
 # === Functions ====================================================================================
@@ -44,5 +45,10 @@ def split_tk_geometry_str(geom_str: str) -> Tuple[int, int, int, int]:
 
     return int(width), int(height), int(posx), int(posy)
 
-
+def ascii_bell():
+    """
+    Audibly alert the operator. Writing the ascii "BEL" to stdout to ring a bell to notify the
+    operator. The BEL code is represented by decimal 7.
+    """
+    sys.stdout.write('\a')
 

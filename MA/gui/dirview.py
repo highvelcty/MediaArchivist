@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import ttk
 
 # Local library
+from .utils import ascii_bell
 
 # === Classes ======================================================================================
 class NavBar(tk.Frame):
@@ -14,28 +15,35 @@ class NavBar(tk.Frame):
         self._nav_entry = NavEntry(self)
         self._nav_filter = NavFilter(self)
         self._nav_options = NavOptions(self)
-        self._close_button = tk.Button(self, text = 'x')
+        self._close_button = tk.Button(self, text='x')
 
         self.columnconfigure(0, weight=1)
         self._nav_entry.grid(row=0, column=0, sticky=tk.EW)
-
 
 class NavEntry(tk.Entry):
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master, cnf, **kw)
 
         self.bind('<Tab>', self._on_tab)
-        self.bind('<Return>', self._on_enter)
-        self.bind('<KP_Enter>', self._on_enter)
+        self.bind('<Return>', self._on_enter_pressed)
+        self.bind('<KP_Enter>', self._on_enter_pressed)
 
-        # ..todo:: Where the default focus is set on application start needs to be more dynamic
+        self._first_bell = False
+
+        # ..todo:: Set the default focus properly on application start.
         self.focus_set()
 
-    def _on_enter(self, event):
+    def _ring_bell(self):
+        self._first_bell = True
+        ascii_bell()
+
+    def _reset_bell(self):
+        self._first_bell = False
+
+    def _on_enter_pressed(self, event):
         print('on enter')
 
     def _on_tab(self, event):
-        # current_input = self._string_var.get()
         current_input = self.get()
 
         print('on tab %s' % current_input)

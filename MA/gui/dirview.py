@@ -4,6 +4,7 @@ import os
 import time
 import tkinter as tk
 from tkinter import ttk
+from typing import Iterable
 
 # Local library
 from .utils import ascii_bell
@@ -91,18 +92,33 @@ class Listing(ttk.Treeview):
     def __init__(self, master=None, **kw):
         super().__init__(master, **kw)
 
+class Text(tk.Text):
+    _MAX_DIR_LIST_SPACES = 24
+    def __init__(self, master=None, cnf={}, **kw):
+        super().__init__(master, cnf, wrap=tk.WORD, **kw)
+
+    def list_dirs(self, dirs: Iterable[str]):
+        self.delete(0.0, tk.END)
+
+        spaces = max((len(dir) for dir in dirs))
+        spaces = min(spaces, self._MAX_DIR_LIST_SPACES)
+        spaces = ' ' * spaces
+
+        for dir in dirs:
+            self.insert(tk.END, '%s%s' % (dir, spaces))
+
+        self.see(tk.END)
+
 class DirView(tk.Frame):
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master, cnf, **kw)
 
         self._nav_bar = NavBar(self)
         self._listing = Listing(self)
+        self._text = Text(self)
 
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
-        self._listing.grid(row=0, column=0, sticky=tk.NSEW)
+        self._text.grid(row=0, column=0, sticky=tk.NSEW)
         self._nav_bar.grid(row=1, column=0, sticky=tk.EW)
-
-
-
 

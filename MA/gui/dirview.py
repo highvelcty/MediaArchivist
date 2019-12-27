@@ -1,15 +1,51 @@
 # === Imports ======================================================================================
 # Standard library
+from enum import Enum
 import os
 import time
 import tkinter as tk
 from tkinter import ttk
-from typing import Iterable
+from typing import Callable, Iterable
 
 # Local library
 from .utils import ascii_bell
 
+# === Enumerations =================================================================================
+class Event(Enum):
+    LIST_CANDIDATE_DIRS                         = 0x00000001
+
 # === Classes ======================================================================================
+class Evts(object):
+    def __init__(self, toplevel_type):
+        self._toplevel_type = toplevel_type
+        self._toplevels = {}
+
+    def _get_toplevel(self, widget: tk.Widget):
+        if type(widget) is self._toplevel_type:
+            return widget
+        elif widget.winfo_toplevel() == widget:
+            raise Exception('This event handler is meant for use with %s GUI trees.' %
+                            self._toplevel_type)
+        else:
+            return self._get_toplevel(widget.master)
+
+    def register(self, widget: tk.Widget, event: Event, callback: Callable):
+        toplevel = self._get_toplevel()
+        if toplevel not in self._callbacks:
+            self._toplevels[toplevel] = {}
+
+        callbacks = self._toplevels[toplevel]
+
+        if event not in callbacks:
+            callbacks[event] = []
+
+        if callback not in callbacks[event]:
+            callbacks[event].append(callback)
+
+    def broadcast(self, widget: tk.Widget, event: Event, *args, **kwargs):
+        for callback in self._toplevels[self._get_toplevel(widget)][event]:
+            callback(*args, **kwargs)
+
 class NavBar(tk.Frame):
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master, cnf, **kw)

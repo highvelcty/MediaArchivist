@@ -77,7 +77,6 @@ class GUIConfig(configparser.ConfigParser):
         atexit.register(self._destroy)
 
     def _destroy(self):
-        print('writing to: %s' % self._path_to_file)
         """
         This method is called on python exit.
         """

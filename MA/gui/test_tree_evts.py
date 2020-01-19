@@ -5,14 +5,20 @@ import unittest
 # Local library
 from .tree_evts import TreeEvt, TreeEvts
 
-# === GUI Tree =====================================================================================
+# === GUI Trees ====================================================================================
 class TheRoot(object):
     pass
 
-# === Globals ======================================================================================
-tree_evts  = TreeEvts(TheRoot)
+class TheRoot2(object):
+    pass
 
 # === Classes ======================================================================================
 class TestTreeEvts(unittest.TestCase):
     def test_the_root(self):
-        pass
+        tree_evts_1  = TreeEvts()
+        tree_evts_2 = TreeEvts()
+
+        self.assertNotEqual(tree_evts_1, tree_evts_2)
+        self.assertEqual(len(tree_evts_1._callbacks), len(TreeEvt))
+        # Make sure the callbacks are initialized for each event.
+        self.assertEqual(list(tree_evts_1._callbacks.keys()).sort(), list(TreeEvt).sort())

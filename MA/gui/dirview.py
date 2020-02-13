@@ -98,7 +98,7 @@ class Listing(ttk.Treeview):
     def __init__(self, master=None, **kw):
         super().__init__(master, **kw)
 
-class Text(tk.Text):
+class AvailableDirOutput(tk.Text):
     _MAX_DIR_LIST_SPACES = 24
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master, cnf, wrap=tk.WORD, **kw)
@@ -119,14 +119,14 @@ class DirView(tk.Frame):
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master, cnf, **kw)
 
+        self._tree_evts = TreeEvts(self)
+
         self._nav_bar = NavBar(self)
         self._listing = Listing(self)
-        self._text = Text(self)
+        self._avail_dir_output = AvailableDirOutput(self)
 
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
-        self._text.grid(row=0, column=0, sticky=tk.NSEW)
+        self._avail_dir_output.grid(row=0, column=0, sticky=tk.NSEW)
         self._nav_bar.grid(row=1, column=0, sticky=tk.EW)
 
-# === Globals ======================================================================================
-tree_evts = TreeEvts(DirView)

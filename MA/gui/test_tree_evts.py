@@ -13,10 +13,10 @@ class TheRoot2(object):
     pass
 
 # === Classes ======================================================================================
-class TestTreeEvts(unittest.TestCase):
+class TestRootTreeEvts(unittest.TestCase):
     def test_the_root(self):
-        tree_evts_1  = TreeEvts()
-        tree_evts_2 = TreeEvts()
+        tree_evts_1  = TreeEvts(self)
+        tree_evts_2 = TreeEvts(self)
 
         self.assertNotEqual(tree_evts_1, tree_evts_2)
         self.assertEqual(len(tree_evts_1._callbacks), len(TreeEvt))
